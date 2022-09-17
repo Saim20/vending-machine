@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Servo.h>
+
 // #include <WiFi.h>
 // #include <Firebase_ESP_Client.h>
 // // Provide the token generation process info.
@@ -23,12 +24,12 @@
 // FirebaseAuth auth;
 // FirebaseConfig config;
 
-static const int servoPin1 = 4;
-static const int servoPin2 = 12;
+static const int servoPin1 = 22;
+static const int servoPin2 = 23;
 
 const int buttonPin = 40;
 const int bled = 53;
-const int sled = 33;
+const int sled = 52;
 int buttonState = 0;
 Servo servo1;
 Servo servo2;
@@ -98,10 +99,10 @@ void init_servo()
 void setup()
 {
   // Start serial monitor
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   // Initialize servo objects
-  // init_servo();
+  init_servo();
 
   // Initialize pins
   pin_setup();
@@ -113,15 +114,30 @@ void setup()
   // firebase_setup();
 }
 
-bool running = false;
+// bool running = false;
 
 void loop()
 {
+
+  String msg = Serial.readString();
+  if (msg == "connected")
+  {
+    digitalWrite(bled, HIGH);
+  }
+  else
+  {
+    digitalWrite(bled, LOW);
+  }
+  Serial.println(msg);
 
   buttonState = digitalRead(buttonPin);
 
   if (buttonState == HIGH)
   {
+    Serial.print("get_balance");
+    while(msg != "number"){
+      msg = Serial.readString();
+    }
     
   }
 
